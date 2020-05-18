@@ -1,6 +1,11 @@
 import React from 'react';
 import {createBrowserHistory} from 'history';
-
+import SignIn from '../pages/Signin';
+import SignUp from '../pages/Signup';
+import PizzaList from '../pages/Pizza';
+import Cart from '../pages/Cart';
+import Order from '../pages/Order';
+import PlaceOrder from '../pages/PlaceOrder';
 import {
     Router,
     Route,
@@ -13,11 +18,12 @@ function Routes() {
     return (
         <Router history={history}>
             <Switch>
-                <Route path="/pizza-list" component=""/>
-                <Route path="/signin" component=""/>
-                <Route path="/signup" component=""/>
-                <Route path="/cart" component=""/>
-                <Route path="/orders" component=""/>
+                <Route path="/" exact component={PizzaList}/>
+                <Route path="/signup" component={SignUp}/>
+                <Route path="/signin" component={SignIn}/>
+                <Route path="/cart" component={Cart}/>
+                <Route path="/orders" component={Order}/>
+                <Route path="/place-order" component={PlaceOrder}/>
             </Switch>
         </Router>
     );
