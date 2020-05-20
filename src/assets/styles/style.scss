@@ -50,6 +50,9 @@ header {
 
 .navLinks {
     li {
+        &:first-child {
+            padding-top: 6px;
+        }
         &:last-child {
             padding: 0 0 0 10px;
         }
@@ -78,6 +81,7 @@ header {
 
 .pizza-image-wrapper {
     max-width: 100%;
+    text-align: center;
 }
 
 .pizza-image {
@@ -223,4 +227,9 @@ header {
 
 .ant-btn-primary:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.order-form-btn {
+    text-align: right;
+    padding-top: 10px;
 }

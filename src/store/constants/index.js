@@ -12,6 +12,9 @@ export const LOG_OUT_WATCHER = 'LOG_OUT_WATCHER';
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 
+//  for currency
+export const SET_CURRENCY = 'SET_CURRENCY';
+
 //  for cart list 
 export const GET_CART_LIST_WATCHER = 'GET_CART_LIST_WATCHER';
 export const GET_CART_LIST_SUCCESS = 'GET_CART_LIST_SUCCESS';

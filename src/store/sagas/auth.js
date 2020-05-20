@@ -81,7 +81,7 @@ export function* signupWatcher() {
 export const getToken = (state) => state.authReducer.token;
 
 function logoutApi(token) {
-    return axios.post(`${API_BASE_URL}logout`, {
+    return axios.get(`${API_BASE_URL}logout`, {
         headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`

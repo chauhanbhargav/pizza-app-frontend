@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Button } from "antd";
+import {
+    FaDollarSign,
+    FaEuroSign
+  } from "react-icons/fa";
 
 import { getUUID } from "../../utils/generateUuid";
 import Navbar from "../../components/Navbar";
 import CartItem from "../../components/CartItem";
 import Loading from "../../components/Loading";
-import { DeliveryFee } from "../../utils/constants";
+import { DeliveryFee, DOLLAR } from "../../utils/constants";
+import OrderModel from "../../components/OrderModel";
 
 const Cart = ({
   cartItems,
@@ -13,8 +18,17 @@ const Cart = ({
   removeFromCart,
   updateCart,
   isLoading,
+  currency,
+  placeOrder,
+  success,
+  error,
+  setPlaceOrderSuccess,
+  setPlaceOrderError,
   history
 }) => {
+
+  const [openStatus, setOpenStatus] = useState(false);
+
   useEffect(() => {
     fetchCart({ uuid: getUUID() });
   }, []);
@@ -40,6 +54,16 @@ const Cart = ({
     );
   };
 
+  const currencyIcon = currency === DOLLAR ? <FaDollarSign /> : <FaEuroSign />;
+
+  let totalItemsPrice = 0;
+  let price = '';
+  cartItems.forEach((cartItem) => {
+    price = currency === DOLLAR ? cartItem.pizza_detail.dollar : cartItem.pizza_detail.euro
+    totalItemsPrice += price * cartItem.quantity;
+  });
+
+
   const renderCartItems = () => {
     if (cartItems.length === 0) {
       return <p className="no-items-cart">No items in the cart</p>;
@@ -50,19 +74,16 @@ const Cart = ({
         key={`CART_ITEM_${index}`}
         removeFromCart={removeFromCart}
         updateCart={updateCart}
+        price={price}
+        currencyIcon={currencyIcon}
         editable
       />
     ));
   };
 
-  let totalItemsPrice = 0;
-  cartItems.forEach((cartItem) => {
-    totalItemsPrice += cartItem.pizza_detail.price * cartItem.quantity;
-  });
-
   return (
     <div className="container">
-      <Navbar />
+      <Navbar history={history}/>
       <div className="content-container">
         <div className="cart-container">
           <div className="cart-items-container">
@@ -89,10 +110,10 @@ const Cart = ({
                         flexDirection: "column",
                       }}
                     >
-                      <p className="price-label">${totalItemsPrice}</p>
-                      <p className="price-label">${DeliveryFee}</p>
+                      <p className="price-label">{currencyIcon} {totalItemsPrice}</p>
+                      <p className="price-label">{currencyIcon} {DeliveryFee}</p>
                       <p className="total-price-label">
-                        ${totalItemsPrice + DeliveryFee}
+                        {currencyIcon} {totalItemsPrice + DeliveryFee}
                       </p>
                     </div>
                   </Col>
@@ -106,7 +127,7 @@ const Cart = ({
             <div className="cart-order-container">
               <Button
                 type="primary"
-                onClick={() => history.push("/place-order")}
+                onClick={() => setOpenStatus(true)}
               >
                 Checkout
               </Button>
@@ -114,6 +135,18 @@ const Cart = ({
           )}
         </div>
       </div>
+      <OrderModel 
+        open={openStatus}
+        close={() => setOpenStatus(false)}
+        fetchCart={() => fetchCart()}
+        placeOrder={(data) => placeOrder(data)}
+        isLoading={isLoading}
+        success={success}
+        error={error}
+        setPlaceOrderSuccess={() => setPlaceOrderSuccess()}
+        setPlaceOrderError={() => setPlaceOrderError()}
+        history={history}
+      />
       {isLoading && <Loading />}
     </div>
   );

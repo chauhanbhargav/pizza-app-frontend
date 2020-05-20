@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createBrowserHistory} from 'history';
 import SignIn from '../pages/Signin';
 import SignUp from '../pages/Signup';
 import PizzaList from '../pages/Pizza';
 import Cart from '../pages/Cart';
 import Order from '../pages/Order';
-import PlaceOrder from '../pages/PlaceOrder';
 import {
     Router,
     Route,
@@ -23,7 +22,6 @@ function Routes() {
                 <Route path="/signin" component={SignIn}/>
                 <Route path="/cart" component={Cart}/>
                 <Route path="/orders" component={Order}/>
-                <Route path="/place-order" component={PlaceOrder}/>
             </Switch>
         </Router>
     );

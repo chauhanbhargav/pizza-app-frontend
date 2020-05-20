@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import { Row, Col, InputNumber, Button } from "antd";
 import { FaTrash } from "react-icons/fa";
 
 import { getUUID } from "../utils/generateUuid";
-import moment from 'moment';
 
-const CartItem = ({ cartItem, removeFromCart, updateCart, editable, date }) => {
+const CartItem = ({ cartItem, removeFromCart, updateCart, editable, price, currencyIcon }) => {
+
+
   const onRemove = () => {
     removeFromCart({ uuid: getUUID(), id: cartItem.id });
   };
@@ -45,14 +46,14 @@ const CartItem = ({ cartItem, removeFromCart, updateCart, editable, date }) => {
           )}
         </Col>
         <Col span={editable ? 4 : 6} style={{ textAlign: "right" }}>
-          ${cartItem.quantity * cartItem.pizza_detail.price}
+          {currencyIcon} {cartItem.quantity * price}
         </Col>
         {editable && (
-          <Col span={2} style={{ justifyContent: "right", display: "flex" }}>
+          <Col span={2} style={{ justifyContent: "center", display: "flex" }}>
             <Button icon={<FaTrash />} onClick={onRemove} />
           </Col>
         )}
-      </Row>
+      </Row>      
     </div>
   );
 };

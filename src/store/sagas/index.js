@@ -8,7 +8,7 @@ import {
   removeCartWatcher,
 } from "./cart";
 import { placeOrderWatcher, fetchOrdersWatcher } from "./orders";
-import { signinWatcher, signupWatcher } from "./auth";
+import { signinWatcher, signupWatcher, logoutWatcher } from "./auth";
 
 export default function* rootSaga() {
   yield all([
@@ -20,6 +20,7 @@ export default function* rootSaga() {
     placeOrderWatcher(),
     fetchOrdersWatcher(),
     signinWatcher(),
-    signupWatcher()
+    signupWatcher(),
+    logoutWatcher()
   ]);
 }

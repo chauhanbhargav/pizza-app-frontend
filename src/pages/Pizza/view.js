@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import Pizzas from "../../components/Pizzas";
 import Loading from "../../components/Loading";
 
-const Pizza = ({ getPizza, isLoading }) => {
+const Pizza = ({ getPizza, isLoading, history }) => {
 
   useEffect(() => {
     getPizza();
@@ -11,7 +11,7 @@ const Pizza = ({ getPizza, isLoading }) => {
 
   return (
     <div className="container">
-      <Navbar />
+      <Navbar history={history}/>
       <div className="content-container">
         <Pizzas />
       </div>
