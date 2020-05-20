@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Pizza from "./Pizza";
 import { addToCart } from "../store/actions";
 
-const Pizzas = ({ pizzas, addToCart }) => {
+const Pizzas = ({ pizzas, addToCart, currency }) => {
   return (
     <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
       {pizzas.map((pizza, index) => (
@@ -15,7 +15,7 @@ const Pizzas = ({ pizzas, addToCart }) => {
           key={`PIZZE_${index}`}
           style={{ display: "flex" }}
         >
-          <Pizza pizza={pizza} addToCart={addToCart} />
+          <Pizza pizza={pizza} addToCart={addToCart} currency={currency} />
         </Col>
       ))}
     </Row>
@@ -24,7 +24,8 @@ const Pizzas = ({ pizzas, addToCart }) => {
 
 const mapStateToProps = (store) => {
   return {
-    pizzas: store.pizzasReducer.pizzas
+    pizzas: store.pizzasReducer.pizzas,
+    currency: store.currencyReducer.currency
   };
 };
 

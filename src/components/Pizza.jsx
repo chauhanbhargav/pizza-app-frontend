@@ -1,15 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Row, Col, Select } from "antd";
-
+import {
+    FaDollarSign,
+    FaEuroSign
+  } from "react-icons/fa";
 import { getUUID } from "../utils/generateUuid";
+import { DOLLAR } from "../utils/constants";
+import { search } from "../utils/search";
 
 const { Option } = Select;
 
-const Pizza = ({ pizza, addToCart }) => {
+const Pizza = ({ pizza, addToCart, currency }) => {
   const [size, setSize] = useState(0);
   const [crust, setCrust] = useState(0);
   const [crustOptions, setCrustOptions] = useState([]);
   const [sizeOptions, setSizeOptions] = useState([]);
+
+  const currencyIcon = currency === DOLLAR ? <FaDollarSign /> : <FaEuroSign />;
+  const currencyData = currency === DOLLAR ? pizza.pizza_price[0].dollar : pizza.pizza_price[0].euro;
+  const [currencyValue, setCurrencyValue] = useState(currencyData);
+
+  const setPriceValue = () => {
+    const object = search(size, crust, pizza.pizza_price);
+    const currencyData = currency === DOLLAR ? object ? object.dollar : pizza.pizza_price[0].dollar : object ? object.euro : pizza.pizza_price[0].euro;
+    setCurrencyValue(currencyData);
+  }
+
+  useEffect(() => {
+    setPriceValue()
+  }, [currency]);
+
+  useEffect(() => {
+    setPriceValue();
+  }, [size]);
+
+  useEffect(() => {
+    setPriceValue();
+  }, [crust]);
 
   useEffect(() => {
     const sizeOptions = pizza.pizza_price.map((price) => ({
@@ -42,7 +69,7 @@ const Pizza = ({ pizza, addToCart }) => {
     const crustArray = crustOptions.reduce((accumulator, current) => accumulator.some(x => x.value === current.value)? accumulator: [...accumulator, current ], []);
     setCrust(crustArray.length > 0 ? crustArray[0].value : 0);
     setCrustOptions(crustArray);
-  };
+  };  
 
   return (
     <Card
@@ -56,6 +83,11 @@ const Pizza = ({ pizza, addToCart }) => {
         </div>
         <p className="pizza-desc">{pizza.description}</p>
         <div className="pizza-option-wrapper">
+          <Row>
+            <Col lg={24} md={24} sm={24} xs={24} align="right">
+                <p><strong>Price : </strong>{currencyIcon}{currencyValue}</p>
+            </Col>
+          </Row>
           <Row gutter={16}>
             <Col lg={10} md={10} sm={6} xs={12}>
               <p className="select-label">Size</p>
@@ -64,7 +96,7 @@ const Pizza = ({ pizza, addToCart }) => {
                 style={{ width: "100%" }}
                 onChange={(value) => {
                   setSize(value);
-                  setCrustOptionsBasedOnSize(value);
+                  setPriceValue();
                 }}
               >
                 {sizeOptions.map((sizeOption) => (
@@ -82,7 +114,10 @@ const Pizza = ({ pizza, addToCart }) => {
               <Select
                 value={crust}
                 style={{ width: "100%" }}
-                onChange={(value) => setCrust(value)}
+                onChange={(value) => {
+                    setCrust(value);
+                    setPriceValue();
+                }}
               >
                 {crustOptions.map((crustOption) => (
                   <Option
